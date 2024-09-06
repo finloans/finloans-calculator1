@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinLoans EMI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Calculator container that matches the logo styling */
+        .calculator-container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Positioning the logo at the top of the calculator */
+        .calculator-container .logo-container {
+            background-color: #28a745; /* Optional background matching your branding */
+            padding: 20px;
+        }
+
+        .calculator-container .logo-container img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        /* Calculator section with padding */
+        .calculator {
+            padding: 20px;
+        }
+
+        .calculator h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .calculator label {
+            margin-top: 10px;
+            display: block;
+            text-align: left;
+        }
+
+        .calculator input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .calculator button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .result span {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- The container that holds the logo and the calculator -->
+    <div class="calculator-container">
+        <!-- Logo section at the top -->
+        <div class="logo-container">
+            <img src="logo.png" alt="FinLoans Logo">
+        </div>
+
+        <!-- Calculator form -->
+        <div class="calculator">
+            <h2>FinLoans EMI Calculator</h2>
+
+            <!-- Input fields for Loan Amount, Interest Rate, and Loan Tenure -->
+            <label for="loanAmount">Loan Amount (₹):</label>
+            <input type="number" id="loanAmount" placeholder="Enter loan amount">
+
+            <label for="interestRate">Interest Rate (%):</label>
+            <input type="number" step="0.01" id="interestRate" placeholder="Enter interest rate">
+
+            <label for="loanTenure">Loan Tenure (Years):</label>
+            <input type="number" id="loanTenure" placeholder="Enter loan tenure in years">
+
+            <!-- Button to calculate EMI -->
+            <button onclick="calculateEMI()">Calculate EMI</button>
+
+            <!-- Result area to display EMI, Principal, Interest, and Total Payment -->
+            <div class="result" id="result">
+                <span id="emi"></span>
+                <span id="totalInterest"></span>
+                <span id="totalPayment"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript file -->
+    <script>
+        function calculateEMI() {
+            // Get input values from the form
+            let principal = document.getElementById("loanAmount").value;
+            let interestRate = document.getElementById("interestRate").value;
+            let tenure = document.getElementById("loanTenure").value;
+
+            // Convert annual interest rate to monthly and tenure to months
+            let monthlyInterestRate = (interestRate / 100) / 12;
+            let numberOfMonths = tenure * 12;
+
+            // EMI calculation using the formula
+            let emi = (principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfMonths)) / 
+                      (Math.pow(1 + monthlyInterestRate, numberOfMonths) - 1);
+
+            // Total payment and interest calculations
+            let totalPayment = emi * numberOfMonths;
+            let totalInterest = totalPayment - principal;
+
+            // Rounding off the results to two decimal places
+            emi = emi.toFixed(2);
+            totalPayment = totalPayment.toFixed(2);
+            totalInterest = totalInterest.toFixed(2);
+
+            // Displaying the results in the respective HTML elements
+            document.getElementById("emi").innerHTML = `Your monthly EMI is ₹${emi}`;
+            document.getElementById("totalInterest").innerHTML = `Total Interest Payable: ₹${totalInterest}`;
+            document.getElementById("totalPayment").innerHTML = `Total Payment (Principal + Interest): ₹${totalPayment}`;
+        }
+    </script>
+
+</body>
+</html>
+
